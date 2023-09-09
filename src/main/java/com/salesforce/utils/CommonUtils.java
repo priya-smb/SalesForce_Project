@@ -79,4 +79,16 @@ public class CommonUtils {
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
     }
+
+    public static boolean isAlertPresent(WebDriver driver){
+        boolean foundAlert = false;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(0) /*timeout in seconds*/);
+        try {
+            wait.until(ExpectedConditions.alertIsPresent());
+            foundAlert = true;
+        } catch (TimeoutException eTO) {
+            foundAlert = false;
+        }
+        return foundAlert;
+    }
 }

@@ -88,6 +88,11 @@ public class CreateAccountTest extends BaseTest {
         login(driver);
         logger.info("logged into salesforce application");
 
+        String accountName1 = "TestMergeAccount 1";
+        String accountName2 = "TestMergeAccount 2";
+        createAccount(accountName1);
+        createAccount(accountName2);
+
         AccountPage accountPage = new AccountPage(driver);
         accountPage.clickAccountLink();
         logger.info("Account page displayed");
@@ -95,7 +100,7 @@ public class CreateAccountTest extends BaseTest {
 
         accountPage.clickMergeAcc();
         Thread.sleep(2000);
-        accountPage.sendValueAccTextBox("Priya");
+        accountPage.sendValueAccTextBox("TestMergeAccount");
         Thread.sleep(2000);
         accountPage.clickAccBtn();
         Thread.sleep(2000);
@@ -103,8 +108,33 @@ public class CreateAccountTest extends BaseTest {
         accountPage.clickOptTwo();
         accountPage.clickNext();
         accountPage.clickMergeAccBtn();
+        Assert.assertTrue(CommonUtils.isAlertPresent(driver));
+        accountPage.confirmMerge();
+        Assert.assertEquals(accountPage.getFirstAccName(),accountName1);
 
 
+        deleteAccount(accountName1);
 
+    }
+
+    private void createAccount(String accountName) {
+        WebDriver driver = getDriver();
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.clickAccountLink();
+        accountPage.clickNewBtn();
+        accountPage.sendAccName(accountName);
+        accountPage.selectAccType("Technology Partner");
+        accountPage.selectCustomerPriority("High");
+        accountPage.clickSaveBtnCreateAcc();
+        logger.info("priority selected high");
+    }
+
+    private void deleteAccount(String accountName) {
+
+        WebDriver driver = getDriver();
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.clickAccountLink();
+        accountPage.openAccDetails(accountName);
+        accountPage.clickDeleteAcc();
     }
 }

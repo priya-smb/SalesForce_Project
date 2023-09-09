@@ -11,13 +11,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.Set;
 
 public class AccountPage {
     WebDriver driver;
     protected Logger logger = LogManager.getLogger(getClass().getName());
 
     //tc-10
-    @FindBy(xpath = "//a[@title='Accounts Tab']")
+    @FindBy(xpath = "//li[@id='Account_Tab']//a")
     private WebElement accountLink;
 
     @FindBy(xpath = "//input[@value =' New ']")
@@ -92,6 +93,10 @@ public class AccountPage {
 
     @FindBy(xpath = "//div[@class='pbBottomButtons']//input[@value=' Merge ']")
     private WebElement mergeAccBtn;
+
+    //validation
+    @FindBy(xpath = "//table[@class='list']//tr//th//a")
+    private List<WebElement> accountNameList;
 
 
     //driver.findElement(By.xpath("//div[@class='toolsContentRight']//li[4]//a")).click();
@@ -179,10 +184,10 @@ public class AccountPage {
 
     public void chooseDropDownList() {
 
-        CommonUtils.waitForElement(driver,viewDropDownList);
+        CommonUtils.waitForElement(driver, viewDropDownList);
         Select select = new Select(viewDropDownList);
         List<WebElement> viewOptions = select.getOptions();
-        for (WebElement viewOptionOne:viewOptions){
+        for (WebElement viewOptionOne : viewOptions) {
             viewOptionOne.click();
         }
     }
@@ -202,11 +207,15 @@ public class AccountPage {
     }
 
     public void clickOptOne() {
-        optionOne.click();
+        if (!optionOne.isSelected()) {
+            optionOne.click();
+        }
     }
 
     public void clickOptTwo() {
-        optionTwo.click();
+        if (!optionTwo.isSelected()) {
+            optionTwo.click();
+        }
     }
 
     public void clickNext() {
@@ -236,10 +245,33 @@ public class AccountPage {
 
     public void clickDeleteAcc() {
         deleteCreatedAccountBtn.click();
+        driver.switchTo().alert().accept();
     }
 
     public void clickMergeAccBtn() {
         mergeAccBtn.click();
+    }
+
+    public void confirmMerge() {
         driver.switchTo().alert().accept();
     }
+
+    public String getFirstAccName() {
+        for (WebElement accName : accountNameList) {
+            return accName.getText();
+        }
+        return null;
+    }
+
+    public void openAccDetails(String accountName) {
+        for (WebElement accName : accountNameList) {
+            String accNameText = accName.getText();
+            if (accNameText.equals(accountName)) {
+                accName.click();
+                break;
+            }
+        }
+
+    }
+
 }
