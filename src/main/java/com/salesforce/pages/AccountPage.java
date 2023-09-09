@@ -210,7 +210,7 @@ public class AccountPage {
     }
 
     public void clickNext() {
-        newBtn.click();
+        nextBtn.click();
     }
 
     public void clickMergeBtn() {
@@ -240,5 +240,6 @@ public class AccountPage {
 
     public void clickMergeAccBtn() {
         mergeAccBtn.click();
+        driver.switchTo().alert().accept();
     }
 }

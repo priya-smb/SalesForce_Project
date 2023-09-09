@@ -93,16 +93,18 @@ public class CreateAccountTest extends BaseTest {
         logger.info("Account page displayed");
         Assert.assertEquals(accountPage.getRecentAccountsTitle(),"Recent Accounts");
 
-        accountPage.clickMergeLink();
+        accountPage.clickMergeAcc();
         Thread.sleep(2000);
-        accountPage.sendValueToFindAccTextBox("Priya");
+        accountPage.sendValueAccTextBox("Priya");
         Thread.sleep(2000);
-        accountPage.clickFindAccBtn();
+        accountPage.clickAccBtn();
         Thread.sleep(2000);
         accountPage.clickOptOne();
         accountPage.clickOptTwo();
         accountPage.clickNext();
         accountPage.clickMergeAccBtn();
+
+
 
     }
 }
