@@ -3,6 +3,8 @@ package com.salesforce.account;
 import com.beust.ah.A;
 import com.salesforce.BaseTest;
 import com.salesforce.pages.AccountPage;
+import com.salesforce.pages.AccountReportPage;
+import com.salesforce.pages.EditViewPage;
 import com.salesforce.utils.CommonUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -10,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
+import java.util.Date;
 
 
 public class CreateAccountTest extends BaseTest {
@@ -72,14 +75,27 @@ public class CreateAccountTest extends BaseTest {
         WebDriver driver = openLoginPage();
         login(driver);
         logger.info("logged into salesforce application");
+        String newViewName = "TC12 View Name1";
+        String updatedViewName = "TC12 View Name2";
+
+        createView(newViewName, "TC12UniqueViewName2");
+        logger.info("Created new view");
 
         AccountPage accountPage = new AccountPage(driver);
         accountPage.clickAccountLink();
         logger.info("Account page displayed");
         Assert.assertEquals(accountPage.getRecentAccountsTitle(),"Recent Accounts");
-        accountPage.chooseDropDownList();
-        Thread.sleep(2000);
 
+        accountPage.chooseDropDownList("Recently Viewed Accounts");
+        accountPage.chooseDropDownList(newViewName);
+        accountPage.clickEditView();
+        EditViewPage editViewPge = new EditViewPage(driver);
+        editViewPge.giveNewViewName(updatedViewName);
+        editViewPge.selectField("Account Name");
+        editViewPge.selectOperator("contains");
+        editViewPge.addValue("a");
+        editViewPge.clickSave();
+        deleteView();
     }
 
     @Test
@@ -129,6 +145,24 @@ public class CreateAccountTest extends BaseTest {
         logger.info("priority selected high");
     }
 
+    private void createView(String viewName, String uniqueViewName) {
+        WebDriver driver = getDriver();
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.clickAccountLink();
+        accountPage.clickCreateNewView();
+
+        EditViewPage viewPage = new EditViewPage(driver);
+        viewPage.setViewName(viewName);
+        viewPage.setUniqueViewName(uniqueViewName);
+        viewPage.saveView();
+    }
+
+    private void deleteView() {
+        WebDriver driver = getDriver();
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.deleteView();
+    }
+
     private void deleteAccount(String accountName) {
 
         WebDriver driver = getDriver();
@@ -136,5 +170,37 @@ public class CreateAccountTest extends BaseTest {
         accountPage.clickAccountLink();
         accountPage.openAccDetails(accountName);
         accountPage.clickDeleteAcc();
+    }
+
+    @Test
+    public void TC_14CreateAccountReport() {
+        WebDriver driver = openLoginPage();
+        login(driver);
+        logger.info("logged into salesforce application");
+
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.clickAccountLink();
+        logger.info("Account page displayed");
+        accountPage.clickLast30DaysReport();
+        logger.info("report page opened in accounts");
+        AccountReportPage accountReportPage = new AccountReportPage(driver);
+        accountReportPage.clickDateFieldDD();
+        accountReportPage.selectCreatedDate();
+        accountReportPage.clickFromDate();
+        accountReportPage.clickFromToday();
+        accountReportPage.clickToDate();
+        accountReportPage.clickToToday();
+        accountReportPage.clickSaveBtn();
+        accountReportPage.switchToPopUp(driver);
+        accountReportPage.giveReportName();
+        accountReportPage.giveUniqReportName("report222");
+        accountReportPage.clickSaveInPopUp();
+        // TODO: 9/9/23
+        //Assert.assertEquals(accountReportPage.getReportTitle(),"reportName");
+
+
+
+
+
     }
 }

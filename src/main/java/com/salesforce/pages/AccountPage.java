@@ -24,6 +24,9 @@ public class AccountPage {
     @FindBy(xpath = "//input[@value =' New ']")
     private WebElement newBtn;
 
+    @FindBy(xpath = "//div[@class='filterLinks']//a[2]")
+    private WebElement deleteViewBtn;
+
     @FindBy(id = "acc2")
     private WebElement accNameInputBox;
 
@@ -65,8 +68,11 @@ public class AccountPage {
 
 
     //Tc-12
-    @FindBy(xpath = "//select[@id='fcf']")
+    @FindBy(xpath = "//select[@name='fcf']")
     private WebElement viewDropDownList;
+
+    @FindBy(xpath = "//div[@class='filterLinks']//a[1]")
+    private WebElement editViewLink;
 
     //tc-13
 
@@ -97,6 +103,11 @@ public class AccountPage {
     //validation
     @FindBy(xpath = "//table[@class='list']//tr//th//a")
     private List<WebElement> accountNameList;
+
+    //TC-14
+    @FindBy(xpath = "//div[@class='toolsContentLeft']//li[2]//a")
+    private WebElement last30DaysReport;
+
 
 
     //driver.findElement(By.xpath("//div[@class='toolsContentRight']//li[4]//a")).click();
@@ -182,14 +193,11 @@ public class AccountPage {
 //
 //    }
 
-    public void chooseDropDownList() {
+    public void chooseDropDownList(String accName) {
 
-        CommonUtils.waitForElement(driver, viewDropDownList);
+//        CommonUtils.waitForElement(driver, viewDropDownList);
         Select select = new Select(viewDropDownList);
-        List<WebElement> viewOptions = select.getOptions();
-        for (WebElement viewOptionOne : viewOptions) {
-            viewOptionOne.click();
-        }
+        select.selectByVisibleText(accName);
     }
 
     public void clickMergeAcc() {
@@ -272,6 +280,21 @@ public class AccountPage {
             }
         }
 
+    }
+
+    public EditViewPage clickEditView() {
+        editViewLink.click();
+        return new EditViewPage(driver);
+
+    }
+    public void deleteView() {
+        deleteViewBtn.click();
+        driver.switchTo().alert().accept();
+    }
+
+    //TC-14
+    public void clickLast30DaysReport() {
+        last30DaysReport.click();
     }
 
 }
