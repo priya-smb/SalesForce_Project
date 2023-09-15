@@ -2,6 +2,8 @@ package com.salesforce.opportunities;
 import com.salesforce.BaseTest;
 import com.salesforce.pages.HomePage;
 import com.salesforce.pages.OpportunitiesPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,6 +11,8 @@ import org.testng.annotations.Test;
 import javax.annotation.concurrent.ThreadSafe;
 
 public class CreateOptyTest extends BaseTest {
+
+    protected static Logger logger = LogManager.getLogger(CreateOptyTest.class);
 
     @Test
     public void TC_15opportunitiesDropDown() throws InterruptedException {
@@ -69,7 +73,44 @@ public class CreateOptyTest extends BaseTest {
         opportunitiesPage.clickpipeline();
         Assert.assertEquals(opportunitiesPage.getPipelineText(),"Opportunity Pipeline");
         logger.info("Opportunity Pipeline page is displayed");
+    }
 
+    @Test
+    public void TC_18testStuckOpportunitiesReport() {
+        WebDriver driver = openLoginPage();
+        login(driver);
+        logger.info("logged into salesforce application");
 
+        HomePage homePage = new HomePage(driver);
+        homePage.selectOptyTab();
+
+        OpportunitiesPage opportunitiesPage = new OpportunitiesPage(driver);
+        Assert.assertEquals(opportunitiesPage.getMyOptyTitle(),"All Opportunities");
+        logger.info("opportunities page is displayed");
+
+        opportunitiesPage.clickStuckOpportunities();
+        Assert.assertEquals(opportunitiesPage.getStuckOpportunitiesTitle(), "Stuck Opportunities");
+        logger.info("Stuck Opportunities report is displayed");
+
+    }
+
+    @Test
+    public void TC_19testQuarterlySummaryReport() {
+        WebDriver driver = openLoginPage();
+        login(driver);
+        logger.info("logged into salesforce application");
+
+        HomePage homePage = new HomePage(driver);
+        homePage.selectOptyTab();
+
+        OpportunitiesPage opportunitiesPage = new OpportunitiesPage(driver);
+        Assert.assertEquals(opportunitiesPage.getMyOptyTitle(),"All Opportunities");
+        logger.info("opportunities page is displayed");
+
+        opportunitiesPage.selectInterval("Current and Next FQ");
+        opportunitiesPage.selectInclude("All Opportunities");
+        opportunitiesPage.clickRunReport();
+        Assert.assertEquals(opportunitiesPage.getReportTitle(),"Opportunity Report");
+        logger.info("Opportunity Report is displayed");
     }
 }

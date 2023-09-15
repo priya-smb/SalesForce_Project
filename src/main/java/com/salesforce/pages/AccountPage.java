@@ -187,11 +187,11 @@ public class AccountPage {
         saveNewViewBtn.click();
     }
 
-//    public String getCreatedView() {
-//        WebElement viewFirst = viewList.get(1);
-//        return viewFirst.getText();
-//
-//    }
+    public String getCreatedView() {
+        WebElement viewFirst = viewList.get(1);
+        return viewFirst.getText();
+
+    }
 
     public void chooseDropDownList(String accName) {
 

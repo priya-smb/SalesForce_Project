@@ -48,7 +48,7 @@ public class MyProfilePage {
     @FindBy(xpath = "//iframe[@title='Rich Text Editor, publisherRichTextEditor']")
     private WebElement postFrame;
 
-    @FindBy(className = "cke_editable")
+    @FindBy(xpath = "//body[@ contenteditable='true']")
     private WebElement inPostTextArea;
 
     @FindBy(id = "publishersharebutton")
@@ -105,15 +105,15 @@ public class MyProfilePage {
         driver.switchTo().defaultContent();
     }
 
-    public void postLink(String postText) {
-        // CommonUtils.waitForElement(driver,post);
+    public void postLink(String postText) throws InterruptedException {
+         CommonUtils.waitForElement(driver,post);
         post.click();
         driver.switchTo().frame(postFrame);
-        // CommonUtils.waitForElement(driver,inPostTextArea);
+         CommonUtils.waitForElement(driver,inPostTextArea);
         inPostTextArea.click();
         inPostTextArea.sendKeys(postText);
         driver.switchTo().defaultContent();
-        // CommonUtils.waitForElement(driver,shareBtn);
+         CommonUtils.waitForElement(driver,shareBtn);
         shareBtn.click();
     }
 

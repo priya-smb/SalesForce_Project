@@ -27,9 +27,11 @@ public class CommonUtils {
     public static String getScreenshot(WebDriver driver) throws IOException {
         String path = FileConstants.SCREENSHOT_PATH;
         TakesScreenshot screen = (TakesScreenshot) driver;
-        File src = screen.getScreenshotAs(OutputType.FILE);
-        File dst = new File(path);
-        FileUtils.copyFile(src, dst);
+        if (screen != null) {
+            File src = screen.getScreenshotAs(OutputType.FILE);
+            File dst = new File(path);
+            FileUtils.copyFile(src, dst);
+        }
         return path;
     }
 
