@@ -51,7 +51,28 @@ public class OpportunitiesPage {
     private WebElement optyPipeline;
 
     @FindBy(xpath = "//h1[@class='noSecondHeader pageType']")
-    private WebElement pipelineText;
+    private WebElement pipelineTitle;
+
+    //TC-18
+
+    @FindBy(xpath = "//a[contains(text(),'Stuck Opportunities')]")
+    private WebElement StuckOpportunities;
+
+    @FindBy(xpath = "//h1[normalize-space()='Stuck Opportunities']")
+    private WebElement stuckOpportunitiesTitle;
+
+    //TC-19
+    @FindBy(id = "quarter_q")
+    private WebElement intervalDD;
+
+    @FindBy(id = "open")
+    private WebElement includeDD;
+
+    @FindBy(xpath = "//input[@value='Run Report']")
+    private WebElement runReport;
+
+    @FindBy(xpath = "//h1[normalize-space()='Opportunity Report']")
+    private WebElement reportTitle;
 
 
 
@@ -115,24 +136,36 @@ public class OpportunitiesPage {
     }
 
     public String getPipelineText() {
-        return pipelineText.getText();
+        return pipelineTitle.getText();
     }
 
+    //TC-18
 
+    public void clickStuckOpportunities() {
+        StuckOpportunities.click();
+    }
 
+    public String getStuckOpportunitiesTitle() {
+        return stuckOpportunitiesTitle.getText();
+    }
 
+    //TC-19
+    public void selectInterval(String intervalDDOption) {
+        Select sltInterval = new Select(intervalDD);
+        sltInterval.selectByVisibleText(intervalDDOption);
+    }
 
+    public void selectInclude(String includeDDOption) {
+        Select sltInterval = new Select(includeDD);
+        sltInterval.selectByVisibleText(includeDDOption);
+    }
 
+    public void clickRunReport() {
+        runReport.click();
+    }
 
-    //driver.findElement(By.id("opp3")).sendKeys("Burlington Textiles Weaving Plant Generator");
-      //  driver.findElement(By.id("opp4")).sendKeys("Priyanka Bayye");
-       // driver.findElement(By.id("opp9")).click();
-        //driver.findElement(By.className("calToday")).click();
-    //Select slt = new Select(driver.findElement(By.id("opp11")));
-      //  slt.selectByVisibleText("Perception Analysis");
-        //driver.findElement(By.id("opp12")).sendKeys("");
-    //Select sltLead = new Select(driver.findElement(By.id("opp6")));
-      //  sltLead.selectByVisibleText("Phone Inquiry");
-        //driver.findElement(By.id("opp17")).sendKeys("");
-       // driver.findElement(By.xpath("//td[@id='bottomButtonRow']//input[1]")).click();
+    public String getReportTitle() {
+        return reportTitle.getText();
+
+    }
 }

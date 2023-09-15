@@ -21,17 +21,27 @@ public class UserMenuPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(id = "userNavLabel")
-    public WebElement userNavLabel;
+    @FindBy(xpath = "//div[@class='menuButtonButton']//span[@id='userNavLabel']")
+    public WebElement userMenuDDBtn;
 
 
     @FindBy(xpath = "//div[@id='userNav-menuItems']//a")
     public List<WebElement> userMenuOptions;
 
+    @FindBy(id = "Lead_Tab")
+    private WebElement leadsTab;
+
+    @FindBy(id = "Contact_Tab")
+    private WebElement contactTab;
+
+    @FindBy(id = "home_Tab")
+    private WebElement homeTab;
+
+
 
     public void showUserMenu() {
 
-        this.userNavLabel.click();
+        this.userMenuDDBtn.click();
     }
 
     public void logout() {
@@ -54,7 +64,6 @@ public class UserMenuPage {
     }
 
 
-
     public boolean selectUserMenu(String text) {
         boolean isSelected = false;
         for (WebElement dropDownOption : userMenuOptions) {
@@ -67,4 +76,20 @@ public class UserMenuPage {
         }
         return isSelected;
     }
+
+    public void clickLeads() {
+
+        leadsTab.click();
+    }
+
+    public void clickContacts() {
+
+        contactTab.click();
+    }
+
+    public void clickHome() {
+
+        homeTab.click();
+    }
+
 }

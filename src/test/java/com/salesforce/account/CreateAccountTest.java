@@ -39,11 +39,12 @@ public class CreateAccountTest extends BaseTest {
 
         accountPage.clickSaveBtnCreateAcc();
         Assert.assertEquals(accountPage.getAccNameTitle(),"Priya ***");
-        logger.info("new account created as "+ accountPage.getAccNameTitle());
+        String accountTitle = accountPage.getAccNameTitle();
+        logger.info("new account created as "+ accountTitle);
 
         accountPage.clickDeleteAcc();
         Assert.assertEquals(accountPage.getRecentAccountsTitle(),"Recent Accounts");
-        logger.info(accountPage.getAccNameTitle()+" is deleted");
+        logger.info(accountTitle + " is deleted");
 
     }
 
@@ -67,11 +68,11 @@ public class CreateAccountTest extends BaseTest {
         accountPage.ClickSaveBtnCreateView();
         logger.info("Newly added View is displayed in the account view list");
         // TODO: 9/8/23 Assert
-        //Assert.assertEquals(accountPage.getCreatedView(),"priya !!!");
+        Assert.assertEquals(accountPage.getCreatedView(),"priya !!!");
     }
 
     @Test
-    public void TC_12editView() throws InterruptedException {
+    public void TC_12editView() {
         WebDriver driver = openLoginPage();
         login(driver);
         logger.info("logged into salesforce application");
@@ -115,11 +116,8 @@ public class CreateAccountTest extends BaseTest {
         Assert.assertEquals(accountPage.getRecentAccountsTitle(),"Recent Accounts");
 
         accountPage.clickMergeAcc();
-        Thread.sleep(2000);
         accountPage.sendValueAccTextBox("TestMergeAccount");
-        Thread.sleep(2000);
         accountPage.clickAccBtn();
-        Thread.sleep(2000);
         accountPage.clickOptOne();
         accountPage.clickOptTwo();
         accountPage.clickNext();

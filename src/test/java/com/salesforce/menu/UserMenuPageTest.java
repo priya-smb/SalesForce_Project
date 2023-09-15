@@ -56,7 +56,7 @@ public class UserMenuPageTest extends BaseTest {
     }
 
     @Test
-    public void selectMyProfile_TC6() {
+    public void selectMyProfile_TC6() throws InterruptedException {
 
         UserMenuPage userMenuPage = showUserMenuOptions();
         checkUserNameMenu_TC5();

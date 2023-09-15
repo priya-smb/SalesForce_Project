@@ -4,12 +4,16 @@ import com.salesforce.BaseTest;
 import com.salesforce.pages.ForgotPwdPage;
 import com.salesforce.pages.HomePage;
 import com.salesforce.pages.LoginPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
 public class LoginTest extends BaseTest {
+
+    protected static Logger logger = LogManager.getLogger(LoginTest.class);
 
     @Test(description = "Login with empty password")
     public void loginWithEmptyPwd_TC1() {
@@ -32,13 +36,14 @@ public class LoginTest extends BaseTest {
         login(driver);
 
         HomePage homePage = new HomePage(driver);
-        Assert.assertEquals(homePage.userNavLabel.getText(), "Priyanka Selenium");
+        Assert.assertEquals(homePage.userMenuDDBtn.getText(), "Priyanka Selenium");
 
     }
 
     @Test()
     public void checkRememberMe_TC3() throws InterruptedException {
-        WebDriver driver = getDriver();
+        logger.info("checkRememberMe_TC3 started");
+        WebDriver driver = BaseTest.getDriver();
         driver.get(getProperty("salesforce.url"));
 
         LoginPage loginPage = login(driver, true);

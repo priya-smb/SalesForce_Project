@@ -1,10 +1,23 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
 <suite name="salesforceSuite" verbose="1" >
-    <test name="Login" >
+    <test name="Login" parallel="classes" thread-count="2">
         <classes>
             <class name="com.salesforce.login.LoginTest" />
-            <class name="com.salesforce.menu.UserMenuPageTest" />
+<!--            <class name="com.salesforce.menu.UserMenuPageTest" />-->
+<!--            <class name="com.salesforce.account.CreateAccountTest" />-->
         </classes>
     </test>
+
+
+
+
+
+
+<!--    <test name="demo" verbose="1">-->
+<!--        <classes>-->
+<!--            <class name="com.salesforce.demo.Demo1" />-->
+<!--            <class name="com.salesforce.demo.Demo2" />-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>

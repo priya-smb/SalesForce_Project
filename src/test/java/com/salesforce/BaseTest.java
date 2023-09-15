@@ -20,10 +20,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -40,18 +37,16 @@ import java.util.Properties;
 
 @Listeners({TestListener.class})
 public class BaseTest {
-    protected Logger logger = LogManager.getLogger(getClass().getName());
+    protected static Logger logger = LogManager.getLogger(BaseTest.class);
 
     private static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
-    private Properties testData;
-
+    private static Properties testData;
 
     //Extent Report
-
-    ExtentReports extent = new ExtentReports();
-    ExtentSparkReporter spark = null;
-    public ExtentTest test = null;
+    static ExtentReports extent = new ExtentReports();
+    static ExtentSparkReporter spark = null;
+    public static ExtentTest test = null;
 
 
     public WebDriver openLoginPage() {
@@ -61,33 +56,42 @@ public class BaseTest {
     }
 
     @BeforeTest
-    public void setDriver() {
+    public static void setConfig() {
+        logger.info("---- Set configurations --------");
         spark = new ExtentSparkReporter(new File(FileConstants.REPORT_PATH));
         extent.attachReporter(spark);
-        WebDriver driver = BaseTest.getBrowserType("chrome", false);
-        threadLocalDriver.set(driver);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        this.testData = FileUtils.readAllProperties(FileConstants.LOGIN_TESTDATA_FILE_PATH2);
+        testData = FileUtils.readAllProperties(FileConstants.LOGIN_TESTDATA_FILE_PATH2);
+
+        logger.info(testData.get("salesforce.url"));
 
     }
 
+
     @BeforeMethod
     public void setup(Method name) {
+
+        WebDriver driver = BaseTest.getBrowserType("chrome", false);
+     // WebDriver driver = BaseTest.getBrowserType("firefox", false);
+        threadLocalDriver.set(driver);
+        logger.info("---- Driver created --------");
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+
         test = extent.createTest(name.getName());
     }
 
     public String getProperty(String key) {
-        return this.testData.getProperty(key);
+        return testData.getProperty(key);
     }
 
-    public WebDriver getDriver() {
+    public static WebDriver getDriver() {
         return threadLocalDriver.get();
     }
 
-    @AfterTest
-    public void removeDriver() {
+    @AfterMethod
+    public static void removeDriver() {
         getDriver().close();
         threadLocalDriver.remove();
         extent.flush();
@@ -158,7 +162,6 @@ public class BaseTest {
     }
 
     public LoginPage login(WebDriver driver) {
-
         return login(driver, false);
     }
 
