@@ -71,7 +71,7 @@ public class BaseTest {
     @BeforeMethod
     public void setup(Method name) {
 
-        WebDriver driver = BaseTest.getBrowserType("chrome", false);
+        WebDriver driver = BaseTest.getBrowserType("chrome", true);
      // WebDriver driver = BaseTest.getBrowserType("firefox", false);
         threadLocalDriver.set(driver);
         logger.info("---- Driver created --------");
